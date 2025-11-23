@@ -12,7 +12,6 @@ def mask_account_card(account_number_card: str) -> str:
 
 
 def get_date(date_time: str) -> str:
-    date_final_str = ('( "' + date_time[8:10] + '.' + date_time[5:7] +
-                      '.' + date_time[:4] + '" )')
-    date_final_show = '"ДД.ММ.ГГГГ" ' + date_final_str
-    return date_final_show
+    """Функция, которая возвращае дату"""
+    date_final_str = date_time[8:10] + '.' + date_time[5:7] + '.' + date_time[:4]
+    return date_final_str
