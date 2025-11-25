@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from src import widget
 
 
@@ -7,17 +8,22 @@ def filter_by_state(info_about_users: list, state: str = "EXECUTED") -> list:
 
 
 def sort_by_date(info_about_users: list) -> list:
-    info_sort = []
-    info_users_date = [item.copy() for item in info_about_users]
-    for info_date in info_users_date:
-        info_only_date = widget.get_date(info_date["date"])
-        info_date["date"] = info_only_date
-    new_users_date_sort = sorted(info_users_date, reverse=True, key=lambda x: datetime.strptime(x["date"], "%d.%m.%Y"))
-    for info_about_user in info_about_users:
-        for new_user_date_sort in new_users_date_sort:
-            if widget.get_date(info_about_user["date"]) == new_user_date_sort["date"]:
-                new_user_date_sort["date"] = info_about_user["date"]
-    return new_users_date_sort
+    """Функция, которая сортирует входные данные по дате"""
+    sort_by_date = sorted(
+        info_about_users, reverse=True, key=lambda x: datetime.strptime(x["date"], "%Y-%m-%dT%H:%M:%S.%f")
+    )
+    return sort_by_date
+
+    # info_users_date = [item.copy() for item in info_about_users]
+    # for info_date in info_users_date:
+    #     info_only_date = widget.get_date(info_date["date"])
+    #     info_date["date"] = info_only_date
+    # new_users_date_sort = sorted(info_users_date, reverse=True, key=lambda x: datetime.strptime(x["date"], "%d.%m.%Y"))
+    # for info_about_user in info_about_users:
+    #     for new_user_date_sort in new_users_date_sort:
+    #         if widget.get_date(info_about_user["date"]) == new_user_date_sort["date"]:
+    #             new_user_date_sort["date"] = info_about_user["date"]
+    # return new_users_date_sort
 
 
 info_about_users = [
