@@ -2,6 +2,8 @@ from datetime import datetime
 
 
 def filter_by_state(users_info_state: list, state: str) -> list:
+    """Функция, которая возвращает новый список словарей, содержащий только те словари, у которых ключ
+    state соответствует указанному значению"""
     filter_users_state = []
     for user_info_state in users_info_state:
         if user_info_state["state"] == "EXECUTED" and state != "CANCELED":
