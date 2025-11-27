@@ -15,15 +15,6 @@ git clone https://github.com/Andrew4791-alt5876/PythonProjrct1.git
 pip install -r requirements.txt
 ```
 
-3. Создайте базу данных и выполните миграции:
-```
-python manage.py migrate
-```
-
-4. Запустите локальный сервер:
-```
-python manage.py runserver
-```
 ## Использование:
 
 1. Перейдите на страницу в вашем веб-браузере.
