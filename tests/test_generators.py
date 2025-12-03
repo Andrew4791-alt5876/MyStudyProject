@@ -1,6 +1,19 @@
 from src.generators import filter_by_currency
 
-def test_filter_by_currency(info_transactions, info_transactions_usd):
+
+def test_filter_by_currency_usd(info_transactions, info_transactions_usd):
     test_generators = filter_by_currency(info_transactions, "USD")
     for i in range(2):
-        assert next(test_generators) == info_transactions_usd
+        assert next(test_generators) == info_transactions_usd[i]
+
+
+def test_filter_by_currency_not_money(info_transactions, info_transactions_empty):
+    test_generators = filter_by_currency(info_transactions, "")
+    for i in range(2):
+        assert next(test_generators) == info_transactions_empty[i]
+
+
+# def test_filter_by_currency_empty_list(info_transactions_empty_list, info_transactions_empty):
+#     test_generators = filter_by_currency(info_transactions_empty_list, "USD")
+#     for i in range(1):
+#         assert next(test_generators) == info_transactions_empty[i]

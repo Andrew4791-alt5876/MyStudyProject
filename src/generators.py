@@ -1,24 +1,18 @@
-def filter_by_currency(transactions, code):
+from typing import Any, Generator
+
+
+def filter_by_currency(transactions: list, code_money: str) -> Generator[list[Any] | Any, Any, None]:
+    """Функция, которая принимает на вход список словарей, представляющих транзакции и возвращает итератор,
+    который поочередно выдает транзакции, где валюта операции соответствует заданной (например, USD)."""
     for transaction in transactions:
-        if transaction["operationAmount"]["currency"]["code"] == code:
+        if transaction["operationAmount"]["currency"]["code"] == code_money and transaction.get("id", 0) != 0:
             yield transaction
+        elif transaction.get("id", 0) == 0:
+            yield []
         else:
-            yield {}
+            yield []
 
 
-def transaction_descriptions(transactions):
+def transaction_descriptions(transactions: list) -> Generator[Any, Any, None]:
     for transaction in transactions:
         yield transaction["description"]
-
-
-
-
-
-# usd_transactions = filter_by_currency(transactions, "USD")
-# for _ in range(2):
-#     print(next(usd_transactions))
-#
-#
-# descriptions = transaction_descriptions(transactions)
-# for _ in range(5):
-#     print(next(descriptions))
