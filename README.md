@@ -13,8 +13,32 @@ git clone https://github.com/Andrew4791-alt5876/MyStudyProject.git
 2. Установите зависимости:
 ```
 pip install -r requirements.txt
+poetry instal
+```
+## Тестирование:
+
+1. Запуск всех тестов:
+```
+pytest
+```
+2. Запуск с детальным выводом:
+```
+pytest -v
+```
+3. Запуск конкретного тестового файла
+```
+pytest tests/test_widget.py
+```
+4. Запуск конкретного теста:
+```
+pytest tests/test_widget.py::test_get_date -v
+```
+5. Запуск с покрытием кода:
+```
+pytest --cov=src --cov-report=html
 ```
 ## Использование:
 
 1. Откройте приложение в вашем PyCharm.
-2. Проект в стадии разработки.
+2. Часть проекта протестированная.
+3. Проект в стадии разработки.
