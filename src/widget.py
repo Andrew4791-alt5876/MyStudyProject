@@ -13,9 +13,9 @@ def mask_account_card_fun(account_number_card: str) -> str:
             mask_account_card = f"{account_number_card[:-17]} {get_mask_card_number(account_number_card[-16:])}"
             return mask_account_card
         else:
-            return 'Не верный номер счета или карты!'
+            return "Не верный номер счета или карты!"
     else:
-        return 'Не верный номер счета или карты!'
+        return "Не верный номер счета или карты!"
 
 
 def get_date(date_time: str) -> str:
@@ -26,6 +26,6 @@ def get_date(date_time: str) -> str:
             date_final_str = f"{dt.day:02d}.{dt.month:02d}.{dt.year}"
             return date_final_str
         except ValueError:
-            return 'Не верный формат даты!'
+            return "Не верный формат даты!"
     else:
-        return 'Не верный формат даты!'
+        return "Не верный формат даты!"

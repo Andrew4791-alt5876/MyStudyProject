@@ -1,6 +1,6 @@
 import pytest
 
-from src.masks import get_mask_card_number, get_mask_account
+from src.masks import get_mask_account, get_mask_card_number
 
 
 @pytest.mark.parametrize(
@@ -15,7 +15,7 @@ from src.masks import get_mask_card_number, get_mask_account
         ((1, 2, 3), "Ошибка ввода номера карты!"),
     ],
 )
-def test_get_mask_card_number(card_number, mask_card_number):
+def test_get_mask_card_number(card_number: str, mask_card_number: str) -> None:
     assert get_mask_card_number(card_number) == mask_card_number
 
 
@@ -31,5 +31,5 @@ def test_get_mask_card_number(card_number, mask_card_number):
         ((1, 2, 3), "Ошибка ввода номера счета!"),
     ],
 )
-def test_get_mask_account(account, mask_account):
+def test_get_mask_account(account: str, mask_account: str) -> None:
     assert get_mask_account(account) == mask_account

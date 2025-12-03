@@ -1,6 +1,6 @@
 import pytest
 
-from src.widget import mask_account_card_fun, get_date
+from src.widget import get_date, mask_account_card_fun
 
 
 @pytest.mark.parametrize(
@@ -16,7 +16,7 @@ from src.widget import mask_account_card_fun, get_date
         ("Visa Gold 599941422842635", "Не верный номер счета или карты!"),
     ],
 )
-def test_mask_account_card(account_number_card, mask_account_card):
+def test_mask_account_card(account_number_card: str, mask_account_card: str) -> None:
     assert mask_account_card_fun(account_number_card) == mask_account_card
 
 
@@ -28,5 +28,5 @@ def test_mask_account_card(account_number_card, mask_account_card):
         (19800405687787977, "Не верный формат даты!"),
     ],
 )
-def test_get_date(date_time, get_date_str):
+def test_get_date(date_time: str, get_date_str: str) -> None:
     assert get_date(date_time) == get_date_str
