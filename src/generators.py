@@ -4,13 +4,16 @@ from typing import Any, Generator
 def filter_by_currency(transactions: list, code_money: str) -> Generator[list[Any] | Any, Any, None]:
     """Функция, которая принимает на вход список словарей, представляющих транзакции и возвращает итератор,
     который поочередно выдает транзакции, где валюта операции соответствует заданной (например, USD)."""
+    if not transactions:
+        return
     for transaction in transactions:
-        if transaction["operationAmount"]["currency"]["code"] == code_money and transaction.get("id", 0) != 0:
-            yield transaction
-        elif transaction.get("id", 0) == 0:
-            yield []
-        else:
-            yield []
+        try:
+            if (transaction.get("operationAmount", {}).get("currency", {}).get("code")) == code_money:
+                yield transaction
+            else:
+                yield []
+        except (StopIteration, AttributeError, KeyError):
+            continue
 
 
 def transaction_descriptions(transactions: list) -> Generator[Any, Any, None]:
