@@ -1,6 +1,7 @@
 import pytest
 
 
+"""Исходные данные для теста функции filter_by_state."""
 @pytest.fixture
 def info_users_state() -> list:
     return [
@@ -11,6 +12,7 @@ def info_users_state() -> list:
     ]
 
 
+"""Выходные данные для теста функции filter_by_state при статусе 'EXECUTED'."""
 @pytest.fixture
 def filter_users_state_executed() -> list:
     return [
@@ -19,6 +21,7 @@ def filter_users_state_executed() -> list:
     ]
 
 
+"""Выходные данные для теста функции filter_by_state при статусе 'CANCELED'."""
 @pytest.fixture
 def filter_users_state_canceled() -> list:
     return [
@@ -27,6 +30,7 @@ def filter_users_state_canceled() -> list:
     ]
 
 
+"""Входные данные для теста функции sort_by_date."""
 @pytest.fixture
 def sort_by_date_enter() -> list:
     return [
@@ -37,6 +41,7 @@ def sort_by_date_enter() -> list:
     ]
 
 
+"""Выходные данные для теста функции sort_by_date."""
 @pytest.fixture
 def sort_by_date_exit() -> list:
     return [
@@ -47,8 +52,9 @@ def sort_by_date_exit() -> list:
     ]
 
 
+"""Исходные данные для теста функции filter_by_currency."""
 @pytest.fixture
-def info_transactions():
+def info_transactions() -> list:
     return [
         {
             "id": 939719570,
@@ -98,8 +104,9 @@ def info_transactions():
     ]
 
 
+"""Выходные данные для теста фукнкции filter_by_currency при коде валюты 'USD'."""
 @pytest.fixture
-def info_transactions_usd():
+def info_transactions_usd() -> list:
     return [
         {
             "id": 939719570,
@@ -133,8 +140,9 @@ def info_transactions_usd():
     ]
 
 
+"""Выходные данные для теста фукнкции filter_by_currency при коде валюты 'RUB'."""
 @pytest.fixture
-def info_transactions_rub():
+def info_transactions_rub() -> list:
     return [
         [],
         [],
@@ -160,11 +168,13 @@ def info_transactions_rub():
     ]
 
 
+"""Входной пустой список данных для теста фукнкции filter_by_currency."""
 @pytest.fixture
-def info_transactions_empty():
+def info_transactions_empty() -> list:
     return []
 
 
+"""Выходной пустой список данных для теста фукнкции filter_by_currency."""
 @pytest.fixture
-def info_transactions_empty_list():
+def info_transactions_empty_list() -> list:
     return []
