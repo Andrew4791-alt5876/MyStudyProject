@@ -33,5 +33,7 @@ def card_number_generator(start_number: int, finish_number: int) -> Generator[st
             for z in range(17 - len(str(number))):
                 zero_str += "0"
             card_number_str = zero_str + str(number)
-            card_number_exit = f"{card_number_str[:4]} {card_number_str[4:9]} {card_number_str[9:13]} {card_number_str[13:]}"
+            card_number_exit = (
+                f"{card_number_str[:4]} {card_number_str[4:9]} {card_number_str[9:13]} {card_number_str[13:]}"
+            )
         yield card_number_exit
