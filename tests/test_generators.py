@@ -1,4 +1,4 @@
-from src.generators import filter_by_currency, transaction_descriptions
+from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 
 
 def test_filter_by_currency_usd(info_transactions: list, info_transactions_usd: list) -> None:
@@ -41,3 +41,11 @@ def test_descriptions_empty_list(info_transactions_empty_list: list, info_transa
     test_generators = transaction_descriptions(info_transactions_empty_list)
     for i in range(5):
         assert list(test_generators) == info_transactions_empty
+
+
+def test_card_number_generator(card_number_generator_exit: list) -> None:
+    """Тест генератора номера карты."""
+    generator_card = card_number_generator(16, 20)
+    for i in range(5):
+        assert next(generator_card) == card_number_generator_exit[i]
+
