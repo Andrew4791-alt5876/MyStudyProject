@@ -37,6 +37,14 @@ pytest tests/test_widget.py::test_get_date -v
 ```
 pytest --cov=src --cov-report=html
 ```
+6. Создание отчета о проверке:
+```
+poetry run pytest --cov
+```
+7. Расположение отчета в HTML-формате: 
+```
+В папке 'htmlcov' в модуле 'index.html'
+```
 ## Использование:
 
 1. Откройте приложение в вашем PyCharm.
