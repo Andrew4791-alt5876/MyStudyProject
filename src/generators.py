@@ -17,5 +17,10 @@ def filter_by_currency(transactions: list, code_money: str) -> Generator[list[An
 
 
 def transaction_descriptions(transactions: list) -> Generator[Any, Any, None]:
+    if not transactions:
+        return
     for transaction in transactions:
-        yield transaction["description"]
+        try:
+            yield transaction["description"]
+        except (StopIteration, AttributeError, KeyError):
+            continue

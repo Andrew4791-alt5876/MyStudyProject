@@ -1,8 +1,8 @@
 import pytest
 
 
-"""Исходные данные для теста функции filter_by_state."""
 @pytest.fixture
+# Исходные данные для теста функции filter_by_state.
 def info_users_state() -> list:
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
@@ -12,8 +12,8 @@ def info_users_state() -> list:
     ]
 
 
-"""Выходные данные для теста функции filter_by_state при статусе 'EXECUTED'."""
 @pytest.fixture
+# Выходные данные для теста функции filter_by_state при статусе 'EXECUTED'.
 def filter_users_state_executed() -> list:
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
@@ -21,8 +21,8 @@ def filter_users_state_executed() -> list:
     ]
 
 
-"""Выходные данные для теста функции filter_by_state при статусе 'CANCELED'."""
 @pytest.fixture
+# Выходные данные для теста функции filter_by_state при статусе 'CANCELED'.
 def filter_users_state_canceled() -> list:
     return [
         {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
@@ -30,8 +30,8 @@ def filter_users_state_canceled() -> list:
     ]
 
 
-"""Входные данные для теста функции sort_by_date."""
 @pytest.fixture
+# Входные данные для теста функции sort_by_date.
 def sort_by_date_enter() -> list:
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
@@ -41,8 +41,8 @@ def sort_by_date_enter() -> list:
     ]
 
 
-"""Выходные данные для теста функции sort_by_date."""
 @pytest.fixture
+# Выходные данные для теста функции sort_by_date.
 def sort_by_date_exit() -> list:
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
@@ -52,8 +52,8 @@ def sort_by_date_exit() -> list:
     ]
 
 
-"""Исходные данные для теста функции filter_by_currency."""
 @pytest.fixture
+# Исходные данные для теста функции filter_by_currency.
 def info_transactions() -> list:
     return [
         {
@@ -104,8 +104,8 @@ def info_transactions() -> list:
     ]
 
 
-"""Выходные данные для теста фукнкции filter_by_currency при коде валюты 'USD'."""
 @pytest.fixture
+# Выходные данные для теста фукнкции filter_by_currency при коде валюты 'USD'.
 def info_transactions_usd() -> list:
     return [
         {
@@ -140,8 +140,8 @@ def info_transactions_usd() -> list:
     ]
 
 
-"""Выходные данные для теста фукнкции filter_by_currency при коде валюты 'RUB'."""
 @pytest.fixture
+# Выходные данные для теста фукнкции filter_by_currency при коде валюты 'RUB'.
 def info_transactions_rub() -> list:
     return [
         [],
@@ -168,13 +168,25 @@ def info_transactions_rub() -> list:
     ]
 
 
-"""Входной пустой список данных для теста фукнкции filter_by_currency."""
 @pytest.fixture
+# Входной пустой список данных для теста фукнкции filter_by_currency.
 def info_transactions_empty() -> list:
     return []
 
 
-"""Выходной пустой список данных для теста фукнкции filter_by_currency."""
 @pytest.fixture
+# Выходной пустой список данных для теста фукнкции filter_by_currency.
 def info_transactions_empty_list() -> list:
     return []
+
+
+@pytest.fixture
+# Выходные данные для теста фукнкции transaction_descriptions при наличии данных.
+def descriptions_exit() -> list[str]:
+    return [
+        "Перевод организации",
+        "Перевод со счета на счет",
+        "Перевод со счета на счет",
+        "Перевод с карты на карту",
+        "Перевод организации",
+    ]

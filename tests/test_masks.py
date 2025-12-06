@@ -2,8 +2,9 @@ import pytest
 
 from src.masks import get_mask_account, get_mask_card_number
 
-
 """Данные для теста маскировки банковской карты."""
+
+
 @pytest.mark.parametrize(
     "card_number, mask_card_number",
     [
@@ -22,6 +23,8 @@ def test_get_mask_card_number(card_number: str, mask_card_number: str) -> None:
 
 
 """Данные для теста маскировки банковского счета."""
+
+
 @pytest.mark.parametrize(
     "account, mask_account",
     [

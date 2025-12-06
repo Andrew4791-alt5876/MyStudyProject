@@ -2,8 +2,9 @@ import pytest
 
 from src.widget import get_date, mask_account_card_fun
 
-
 """Данные для теста функции маскировки данных банковских карт или банковского счета."""
+
+
 @pytest.mark.parametrize(
     "account_number_card, mask_account_card",
     [
@@ -23,6 +24,8 @@ def test_mask_account_card(account_number_card: str, mask_account_card: str) -> 
 
 
 """Данные для теста преобразования формата даты."""
+
+
 @pytest.mark.parametrize(
     "date_time, get_date_str",
     [
