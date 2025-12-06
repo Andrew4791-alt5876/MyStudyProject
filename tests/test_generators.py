@@ -43,8 +43,15 @@ def test_descriptions_empty_list(info_transactions_empty_list: list, info_transa
         assert list(test_generators) == info_transactions_empty
 
 
-def test_card_number_generator(card_number_generator_exit: list) -> None:
-    """Тест генератора номера карты."""
+def test_card_number_generator(card_number_generator_exit_15: list) -> None:
+    """Тест генератора номера карты в диапазоне от 16 до 20."""
     generator_card = card_number_generator(16, 20)
     for i in range(5):
-        assert next(generator_card) == card_number_generator_exit[i]
+        assert next(generator_card) == card_number_generator_exit_15[i]
+
+
+def test_card_number_generator_big(card_number_generator_exit_999: list) -> None:
+    """Тест генератора номера картыв диапазоне от 9000800070006000 до 9000800070006020."""
+    generator_card = card_number_generator(9000800070006000, 9000800070006020)
+    for i in range(5):
+        assert next(generator_card) == card_number_generator_exit_999[i]
