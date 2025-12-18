@@ -38,7 +38,6 @@ def test_log_write_to_file_with_data() -> None:
 
 
 def test_log_print_console_with_zero_devision_data(capsys: Any) -> None:
-    '''hai'''
     """Тест декоратора при выводе результата работы декоратора с результатом функции
     в консоль при отсутствии файла вывода при попытке деления на ноль."""
 
