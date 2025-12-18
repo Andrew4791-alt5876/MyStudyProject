@@ -202,15 +202,3 @@ def card_number_generator_exit_15() -> list[str]:
         "0000 0000 0000 0019",
         "0000 0000 0000 0020",
     ]
-
-
-@pytest.fixture
-# Выходные данные для теста генератора card_number_generator.
-def card_number_generator_exit_999() -> list[str]:
-    return [
-        "9000 8000 7000 6000",
-        "9000 8000 7000 6001",
-        "9000 8000 7000 6002",
-        "9000 8000 7000 6003",
-        "9000 8000 7000 6004",
-    ]
