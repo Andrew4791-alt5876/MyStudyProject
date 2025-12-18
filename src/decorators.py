@@ -38,4 +38,3 @@ def log(filename: Any | None = None) -> Any:
         return wrapper
 
     return decorator
-
