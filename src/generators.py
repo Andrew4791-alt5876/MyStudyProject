@@ -28,7 +28,7 @@ def transaction_descriptions(transactions: list) -> Generator[Any, Any, None]:
             continue
 
 
-def card_number_generator(start_number = '', finish_number = '') -> Generator[str | type[Exception], Any, None]:
+def card_number_generator(start_number: Any ="", finish_number: Any ="") -> Generator[str | type[Exception], Any, None]:
     """Генератор, который выдает номера банковских карт в заданном диапазоне."""
     if (
         isinstance(start_number, int)
