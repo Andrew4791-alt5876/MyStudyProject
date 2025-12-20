@@ -51,7 +51,25 @@ def test_card_number_generator(card_number_generator_exit_15: list) -> None:
 
 
 def test_card_number_generator_big(card_number_generator_exit_999: list) -> None:
-    """Тест генератора номера картыв диапазоне от 9000800070006000 до 9000800070006020."""
+    """Тест генератора номера карты в диапазоне от 9000800070006000 до 9000800070006020."""
     generator_card = card_number_generator(9000800070006000, 9000800070006020)
     for i in range(5):
         assert next(generator_card) == card_number_generator_exit_999[i]
+
+
+def test_card_number_generator_no_data() -> None:
+    """Тест генератора номера карты при отсутствии данных ввода."""
+    generator_card = card_number_generator()
+    assert next(generator_card) == "Не верные данные."
+
+
+def test_card_number_generator_not_right_data() -> None:
+    """Тест генератора номера карты при не верном вводе данных."""
+    generator_card = card_number_generator(567, 7)
+    assert next(generator_card) == "Не верные данные."
+
+
+def test_card_number_generator_not_typeerror() -> None:
+    """Тест генератора номера карты при не верном вводе данных."""
+    generator_card = card_number_generator('567', 7)
+    assert next(generator_card) == "Не верные данные."
