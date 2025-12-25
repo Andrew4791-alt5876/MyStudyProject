@@ -6,6 +6,7 @@ authors = ["Andrey Tiurin"]
 
 [tool.poetry.dependencies]
 python = "^3.13"
+python-dotenv = "^1.2.1"
 
 [build-system]
 requires = ["poetry-core"]
