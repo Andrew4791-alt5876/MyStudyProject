@@ -71,5 +71,5 @@ def test_card_number_generator_not_right_data() -> None:
 
 def test_card_number_generator_not_typeerror() -> None:
     """Тест генератора номера карты при не верном вводе данных."""
-    generator_card = card_number_generator('567', 7)
+    generator_card = card_number_generator("567", 7)
     assert next(generator_card) == "Не верные данные."
