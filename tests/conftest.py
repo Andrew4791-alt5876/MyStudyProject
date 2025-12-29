@@ -105,7 +105,7 @@ def info_transactions() -> list:
 
 
 @pytest.fixture
-# Выходные данные для теста фукнкции filter_by_currency при коде валюты 'USD'.
+# Выходные данные для теста функции filter_by_currency при коде валюты 'USD'.
 def info_transactions_usd() -> list:
     return [
         {
@@ -141,7 +141,7 @@ def info_transactions_usd() -> list:
 
 
 @pytest.fixture
-# Выходные данные для теста фукнкции filter_by_currency при коде валюты 'RUB'.
+# Выходные данные для теста функции filter_by_currency при коде валюты 'RUB'.
 def info_transactions_rub() -> list:
     return [
         [],
