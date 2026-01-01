@@ -23,8 +23,20 @@ def test_filter_by_currency_not_money(info_transactions: list, info_transactions
 
 
 def test_filter_by_currency_empty_list(info_transactions_empty_list: list, info_transactions_empty: list) -> None:
-    """Тест для пустого списка транзакций."""
+    """Тест для пустого списка транзакций первый вариант."""
     test_generators = filter_by_currency(info_transactions_empty_list, "USD")
+    assert next(test_generators) == info_transactions_empty
+
+
+def test_filter_by_currency_empty_list1(info_transactions_empty_list: list, info_transactions_empty: list) -> None:
+    """Тест для пустого списка транзакций второй вариант."""
+    test_generators = filter_by_currency([{}], "USD")
+    assert next(test_generators) == info_transactions_empty
+
+
+def test_filter_by_currency_empty_list2(info_transactions_empty_list: list, info_transactions_empty: list) -> None:
+    """Тест для пустого списка транзакций второй вариант."""
+    test_generators = filter_by_currency([{"1": 1}], "USD")
     assert next(test_generators) == info_transactions_empty
 
 

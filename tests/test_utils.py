@@ -1,7 +1,5 @@
 from unittest.mock import mock_open, patch
 
-import pytest
-
 from src.utils import read_json_file
 
 
@@ -31,16 +29,11 @@ def test_read_json_file_with_empty_list() -> None:
 
 def test_read_json_file_with_invalid_path_syntax() -> None:
     """Тест функции с некорректным синтаксисом пути."""
-    test_data = "[]"
-    with patch("builtins.open", mock_open(read_data=test_data)) as mock_file:
-        mock_file.side_effect = FileNotFoundError("Неверный путь")
-        result = read_json_file("C:\\invalid:path\\file.json")
-    assert result == []
+    resalt = read_json_file("C:\\invalid:path\\file.json")
+    assert resalt == []
 
 
 def test_read_json_file_with_no_path() -> None:
     """Тест функции преобразования JSON-файла при отсутствии пути."""
-    test_data = '[]'
-    with patch("builtins.open", mock_open(read_data=test_data)):
-        result = read_json_file()
+    result = read_json_file()
     assert result == []

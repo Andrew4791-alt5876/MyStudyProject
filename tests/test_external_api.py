@@ -3,11 +3,11 @@ from unittest.mock import MagicMock, Mock, patch
 
 import requests
 
-from src.external_api import convert_amount_of_transactions
+from src.external_api import amount_of_transactions, convert_amount_of_transactions
 
 
 def test_with_monkeypatch(monkeypatch: Any) -> None:
-    '''Тест с использованием monkeypatch фикстуры'''
+    """Тест с использованием monkeypatch фикстуры"""
     monkeypatch.setattr("src.external_api.os.getenv", lambda x: "test-api-key")
     mock_response = Mock()
     mock_response.status_code = 200
@@ -53,7 +53,7 @@ def test_network_timeout() -> None:
 
 
 def test_invalid_json_response() -> Any:
-    '''Тест некорректного JSON в ответе'''
+    """Тест некорректного JSON в ответе"""
     with patch("src.external_api.os.getenv", return_value="test-key"), patch("src.external_api.load_dotenv"), patch(
         "src.external_api.requests.request"
     ) as mock_request:
@@ -65,3 +65,39 @@ def test_invalid_json_response() -> Any:
         result = convert_amount_of_transactions(100.0, "USD")
         assert isinstance(result, str)
         assert "Ошибка обработки данных:" in result
+
+
+# Мокируем функцию конвертации для тестов
+@patch("src.external_api.convert_amount_of_transactions")
+class TestAmountOfTransactions:
+    """Тесты для функции amount_of_transactions"""
+
+    def test_rub_transaction(self, mock_convert: Any) -> None:
+        """Тест транзакции в рублях"""
+        transaction = {"operationAmount": {"amount": "1500.50", "currency": {"code": "RUB"}}}
+        result = amount_of_transactions(transaction)
+        assert result == 1500.50
+        mock_convert.assert_not_called()
+
+    def test_usd_transaction(self, mock_convert: Any) -> None:
+        """Тест транзакции в долларах"""
+        mock_convert.return_value = 75000.0
+        transaction = {"operationAmount": {"amount": "1000.00", "currency": {"code": "USD"}}}
+        result = amount_of_transactions(transaction)
+        assert result == 75000.0
+        mock_convert.assert_called_once_with(1000.0, "USD")
+
+    def test_eur_transaction(self, mock_convert: Any) -> None:
+        """Тест транзакции в евро"""
+        mock_convert.return_value = 85000.0
+        transaction = {"operationAmount": {"amount": "1000.00", "currency": {"code": "EUR"}}}
+        result = amount_of_transactions(transaction)
+        assert result == 85000.0
+        mock_convert.assert_called_once_with(1000.0, "EUR")
+
+    def test_invalid_currency(self, mock_convert: Any) -> None:
+        """Тест недопустимой валюты"""
+        transaction = {"operationAmount": {"amount": "1000.00", "currency": {"code": "GBP"}}}
+        result = amount_of_transactions(transaction)
+        assert result == "Не допустимая валюта"
+        mock_convert.assert_not_called()

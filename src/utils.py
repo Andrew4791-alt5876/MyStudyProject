@@ -1,8 +1,7 @@
 import json
-from typing import Any
 
 
-def read_json_file(path: str = '') -> list[Any]:
+def read_json_file(path: str = "") -> list:
     """Функция, которая считывает и преобразует JSON-файл в Python-список"""
     if not isinstance(path, str):
         return []
@@ -16,7 +15,5 @@ def read_json_file(path: str = '') -> list[Any]:
                     return []
             except json.JSONDecodeError:
                 return []
-    except FileNotFoundError:
-        return []
-    except Exception:
+    except (FileNotFoundError, PermissionError, SyntaxError, TypeError, OSError):
         return []
