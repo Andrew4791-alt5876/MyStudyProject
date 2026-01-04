@@ -4,28 +4,29 @@ from typing import Any, Generator
 def filter_by_currency(transactions: list, code_money: str) -> Generator[list[Any] | Any, Any, None]:
     """Функция, которая поочередно выдает транзакции,
     где валюта операции соответствует заданной (например, USD)."""
-    if not transactions:
-        return
-    for transaction in transactions:
-        try:
-            if (transaction.get("operationAmount", {}).get("currency", {}).get("code")) == code_money:
-                yield transaction
-            else:
+    if isinstance(transactions, list):
+        for transaction in transactions:
+            try:
+                isinstance(transaction, dict)
+                if (transaction.get("operationAmount", {}).get("currency", {}).get("code")) == code_money:
+                    yield transaction
+                else:
+                    yield []
+            except StopIteration:
                 yield []
-        except (StopIteration, AttributeError, KeyError):
-            continue
+    yield []
 
 
 def transaction_descriptions(transactions: list) -> Generator[Any, Any, None]:
     """Функция, которая принимает список словарей с транзакциями
     и возвращает описание каждой операции по очереди."""
     if not transactions:
-        return
+        yield []
     for transaction in transactions:
         try:
             yield transaction["description"]
         except (StopIteration, AttributeError, KeyError):
-            continue
+            yield []
 
 
 def card_number_generator(

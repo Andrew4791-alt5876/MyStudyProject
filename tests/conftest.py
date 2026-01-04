@@ -105,7 +105,7 @@ def info_transactions() -> list:
 
 
 @pytest.fixture
-# Выходные данные для теста фукнкции filter_by_currency при коде валюты 'USD'.
+# Выходные данные для теста функции filter_by_currency при коде валюты 'USD'.
 def info_transactions_usd() -> list:
     return [
         {
@@ -141,7 +141,7 @@ def info_transactions_usd() -> list:
 
 
 @pytest.fixture
-# Выходные данные для теста фукнкции filter_by_currency при коде валюты 'RUB'.
+# Выходные данные для теста функции filter_by_currency при коде валюты 'RUB'.
 def info_transactions_rub() -> list:
     return [
         [],
@@ -208,9 +208,9 @@ def card_number_generator_exit_15() -> list[str]:
 # Выходные данные для теста генератора card_number_generator.
 def card_number_generator_exit_999() -> list[str]:
     return [
-        '9000 8000 7000 6000',
-        '9000 8000 7000 6001',
-        '9000 8000 7000 6002',
-        '9000 8000 7000 6003',
-        '9000 8000 7000 6004'
+        "9000 8000 7000 6000",
+        "9000 8000 7000 6001",
+        "9000 8000 7000 6002",
+        "9000 8000 7000 6003",
+        "9000 8000 7000 6004",
     ]
