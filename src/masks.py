@@ -38,7 +38,3 @@ def get_mask_account(user_account: str) -> str:
     else:
         logger.error("Ошибка ввода номера счета")
         return "Ошибка ввода номера счета!"
-
-
-print(get_mask_card_number("223423452345789"))
-print(get_mask_account("12345123451234512341"))

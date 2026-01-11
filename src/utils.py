@@ -29,6 +29,3 @@ def read_json_file(path: str = "") -> list:
     except (FileNotFoundError, PermissionError, SyntaxError, TypeError, OSError):
         logger.error("Ошибка при считывании JSON-файла")
         return []
-
-
-print(read_json_file("/data/operations.json"))
