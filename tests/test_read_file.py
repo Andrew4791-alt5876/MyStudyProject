@@ -174,10 +174,10 @@ class TestReadExcelFile:
     @patch("pandas.read_excel")
     def test_single_row_dataframe(self, mock_read_excel: Any) -> None:
         """Тест: Excel файл с одной строкой"""
-        mock_df = pd.DataFrame({"id": [1], "name": ["Единственный"]})
+        mock_df = pd.DataFrame({"id": [1], "name": ["Андрей"]})
         mock_read_excel.return_value = mock_df
         result = read_excel_file("single.xlsx")
-        expected = [{"id": 1, "name": "Единственный"}]
+        expected = [{"id": 1, "name": "Андрей"}]
         assert result == expected
 
     @patch("pandas.read_excel")
