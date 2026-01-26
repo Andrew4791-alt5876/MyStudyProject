@@ -8,6 +8,10 @@ from dotenv import load_dotenv
 
 def convert_amount_of_transactions(amount: float, currency: str) -> Union[float, str]:
     """Функция конвертирования валюты из долларов или евро в рубли."""
+    if currency not in ["USD", "EUR", "RUB"]:
+        return "Недопустимый код валюты для конвертации"
+    if amount <= 0:
+        return "Сумма должна быть положительной"
     load_dotenv()
     API_KEY: str | None = os.getenv("API_KEY")
     if not API_KEY:
@@ -17,9 +21,8 @@ def convert_amount_of_transactions(amount: float, currency: str) -> Union[float,
     params: Dict[str, Union[str, float]] = {"to": "RUB", "from": currency, "amount": amount}
     try:
         response = requests.request("GET", url, headers=headers, params=params, timeout=10)
-        response.raise_for_status()  # Проверка HTTP ошибок
+        response.raise_for_status()
         result = json.loads(response.text)
-        # Проверяем структуру ответа
         if "result" in result and isinstance(result["result"], (int, float)):
             return round(float(result["result"]), 2)
         else:
