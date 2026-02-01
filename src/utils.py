@@ -11,7 +11,7 @@ file_handler.setFormatter(file_formater)
 logger.addHandler(file_handler)
 
 
-def read_json_file(path: str = "") -> list:
+def read_json_file(path: str = "") -> list[dict]:
     """Функция, которая считывает и преобразует JSON-файл в Python-список"""
     if not isinstance(path, str):
         logger.error("Не верный путь к JSON-файлу")
