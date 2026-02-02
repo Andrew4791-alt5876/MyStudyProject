@@ -3,6 +3,7 @@ from typing import Any
 from src.read_file import read_csv_file, read_excel_file
 from src.utils import read_json_file
 from src.processing import filter_by_state, sort_by_date
+from src.widget import mask_account_card_fun
 
 
 def load_data_operations(choose_user: Any) -> list[dict] | None | str:
@@ -73,6 +74,8 @@ def sort_operations_by_date(select_transactions_by_status, date_sort_user):
                 )
                 return sort_transactions
         elif date_sort_user.isalpha() and date_sort_user in ['НЕТ', 'НЕ', 'Н']:
+            for one_transaction in select_transactions_by_status:
+                one_transaction['date'] = one_transaction['date'][:10]
             return select_transactions_by_status
         else:
             date_sort_user = input(
@@ -168,15 +171,23 @@ def main():
     print('#' * 80)
 
     print('\nРаспечатываю итоговый список транзакций...')
-    print(f'Всего банковских операций в выборке: {data_after_choosing}\n')
-    for k in data_after_choosing:
-
-
-
+    print(f'Всего банковских операций в выборке: {len(data_after_choosing)}')
+    for k in data_after_choosing[:5]:
+        if isinstance(k.get('from'), str):
+            print(
+                f'\n{k['date']} {k['description']}\n'
+                f'{mask_account_card_fun(k['from'])} -> {mask_account_card_fun(k['to'])}\n'
+                f'Сумма: {k['amount']}'
+            )
+        else:
+            print(
+                f'\n{k['date']} {k['description']}\n'
+                f'{mask_account_card_fun(k['to'])}\n'
+                f'Сумма: {k['amount']}'
+            )
 
 
 main()
-
 
 # Программа: Отсортировать операции по дате? Да/Нет
 #
