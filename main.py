@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 from src.read_file import read_csv_file, read_excel_file
 from src.utils import read_json_file
@@ -41,16 +42,87 @@ def status_transactions(choose_user_type: Any) -> str:
 
 
 def sort_operations_by_date(select_transactions_by_status, date_sort_user):
+    global sort_transactions
     while date_sort_user or date_sort_user == '':
         if date_sort_user.isalpha() and date_sort_user in ['ДА', 'Д']:
-            return sort_by_date(select_transactions_by_status)
-        elif date_sort_user.isalpha() and date_sort_user == ['НЕТ', 'Н']:
+            direction_of_sort = input(
+                f'Отсортировать по возрастанию или по убыванию?\n'
+                f'Пользователь (по возрастанию - Да /по убыванию - Нет)\n'
+                f'(можно ввести первую букву): '
+            ).upper()
+            if direction_of_sort.isalpha() and direction_of_sort in ['ДА', 'Д', 'ПО ВОЗРАСТАНИЮ']:
+                for one_transaction in select_transactions_by_status:
+                    one_transaction['date'] = one_transaction['date'][:10]
+                sort_transactions = sorted(
+                    select_transactions_by_status,
+                    reverse=False,
+                    key=lambda x: datetime.strptime(
+                        x["date"],"%Y-%m-%d"
+                    )
+                )
+                return sort_transactions
+            elif direction_of_sort.isalpha() and direction_of_sort in ['НЕТ', 'НЕ', 'Н', 'ПО УБЫВАНИЮ']:
+                for one_transaction in select_transactions_by_status:
+                    one_transaction['date'] = one_transaction['date'][:10]
+                sort_transactions = sorted(
+                    select_transactions_by_status,
+                    reverse=True,
+                    key=lambda x: datetime.strptime(
+                        x["date"], "%Y-%m-%d"
+                    )
+                )
+                return sort_transactions
+        elif date_sort_user.isalpha() and date_sort_user in ['НЕТ', 'НЕ', 'Н']:
             return select_transactions_by_status
         else:
             date_sort_user = input(
                 f'Не верный ответ, нужен ответ Да или Нет,\n'
                 f'можно ввести первую букву: '
             ).upper()
+
+
+def sort_transactions_by_rub(sort_transactions_by_date, user_currency_code):
+    if user_currency_code.isalpha() and user_currency_code in ['ДА', 'Д']:
+        list_only_rub = []
+        for transactions_all_currency in sort_transactions_by_date:
+            if (transactions_all_currency.get('currency_code') and transactions_all_currency['currency_code']== 'RUB') or (transactions_all_currency.get('operationAmount') and transactions_all_currency['operationAmount']['currency']['code'] == 'RUB'):
+                list_only_rub.append(transactions_all_currency)
+        return list_only_rub
+    elif user_currency_code.isalpha() and user_currency_code in ['НЕТ', 'НЕ', 'Н']:
+        return sort_transactions_by_date
+
+
+def sort_by_word_of_description(sort_by_rub, choose_user_word):
+    if choose_user_word.isalpha() and choose_user_word in ['ДА', 'Д']:
+        sort_word = input(
+            f'\nВыберите пункт:\n'
+            f'1. Перевод\n'
+            f'2. Открытие вклада\n'
+            f'3. Счета на счет\n'
+            f'4. Карты на карту\n'
+            f'5. Карты на счет\n'
+            f'6. Счет\n'
+            f'7. Карты\n'
+            f'8. Перевод организации\n'
+            f'Ввод пользователя: '
+        )
+        dict_of_words = {
+            '1': 'Перевод',
+            '2': 'Открытие',
+            '3': 'счета',
+            '4': 'карту',
+            '5': 'Перевод с карты на счет',
+            '6': 'счет',
+            '7': 'карты',
+            '8': 'организации'
+        }
+        if int(sort_word) == 5:
+            sort_by_word = [g for g in sort_by_rub if dict_of_words[sort_word] == g['description']]
+        else:
+            sort_by_word = [g for g in sort_by_rub if dict_of_words[sort_word] in g['description'].split()]
+        return sort_by_word
+    elif choose_user_word.isalpha() and choose_user_word in ['НЕТ', 'НЕ', 'Н']:
+        return sort_by_rub
 
 
 def main():
@@ -60,27 +132,91 @@ def main():
     print('\nВыберите необходимый пункт меню: ')
     for key, item in dict_questions.items():
         print(f'{key}. Получить информацию о транзакциях из {item}-файла')
-    choose_user = input('\nПользователь: ')
-    data_operations_select = load_data_operations(choose_user)
+    choose_user_file = input('\nПользователь: ')
+    data_operations_select = load_data_operations(choose_user_file)
     print(f'Найдено {len(data_operations_select)} транзакций.')
     print('#'*80)
 
-    choose_user_type = input(
+    choose_user_status = input(
         f'\nВведите статус, по которому необходимо выполнить фильтрацию.\n'
         f'Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING.\n'
         f'Пользователь (можно ввести первую или первые три буквы): '
     ).upper()
-    user_choose_status = status_transactions(choose_user_type)
+    user_choose_status = status_transactions(choose_user_status)
     print(f'\nОперации отфильтрованы по статусу {user_choose_status}.')
     select_transactions_by_status = filter_by_state(data_operations_select, user_choose_status)
     print(f'Найдено {len(select_transactions_by_status)} транзакций.')
     print('#' * 80)
 
-    date_sort_user = input(f'\nОтсортировать операции по дате? Да/Нет\n'
-                           f'Пользователь (можно ввести первую букву или + или -): '
+    choose_user_sort_date = input(f'\nОтсортировать операции по дате? Да/Нет\n'
+                           f'Пользователь (можно ввести первую букву): '
                            ).upper()
-    sort_transactions_by_date = sort_operations_by_date(select_transactions_by_status, date_sort_user)
+    sort_transactions_by_date = sort_operations_by_date(select_transactions_by_status, choose_user_sort_date)
     print(f'Обработано {len(sort_transactions_by_date)} транзакций.')
+    print('#' * 80)
+
+    choose_user_sort_rub = input(f'\nВыводить только рублевые транзакции? Да/Нет\n'
+                                      f'Пользователь (можно ввести первую букву): ').upper()
+    sort_by_rub = sort_transactions_by_rub(sort_transactions_by_date, choose_user_sort_rub)
+    print(f'Найдено {len(sort_by_rub)} транзакций.')
+    print('#' * 80)
+
+    choose_user_word = input(f'\nОтфильтровать список транзакций по определенному слову в описании? Да/Нет\n'
+                             f'Пользователь (можно ввести первую букву): ').upper()
+    data_after_choosing = sort_by_word_of_description(sort_by_rub, choose_user_word)
+    print(f'Найдено {len(data_after_choosing)} транзакций.')
+    print('#' * 80)
+
+    print('\nРаспечатываю итоговый список транзакций...')
+    print(f'Всего банковских операций в выборке: {data_after_choosing}\n')
+    for k in data_after_choosing:
+
+
+
 
 
 main()
+
+
+# Программа: Отсортировать операции по дате? Да/Нет
+#
+# Пользователь: да
+#
+# Программа: Отсортировать по возрастанию или по убыванию?
+#
+# Пользователь: по возрастанию/по убыванию
+#
+# Программа: Выводить только рублевые транзакции? Да/Нет
+#
+# Пользователь: да
+#
+# Программа: Отфильтровать список транзакций по определенному слову
+# в описании? Да/Нет
+#
+# Пользователь: да/нет
+#
+# Программа: Распечатываю итоговый список транзакций...
+#
+# Программа:
+# Всего банковских операций в выборке: 4
+#
+# 08.12.2019 Открытие вклада
+# Счет **4321
+# Сумма: 40542 руб.
+#
+# 12.11.2019 Перевод с карты на карту
+# MasterCard 7771 27** **** 3727 -> Visa Platinum 1293 38** **** 9203
+# Сумма: 130 USD
+#
+# 18.07.2018 Перевод организации
+# Visa Platinum 7492 65** **** 7202 -> Счет **0034
+# Сумма: 8390 руб.
+#
+# 03.06.2018 Перевод со счета на счет
+# Счет **2935 -> Счет **4321
+# Сумма: 8200 EUR
+#
+# Если выборка оказалась пустой, программа выводит сообщение:
+#
+# Программа: Не найдено ни одной транзакции, подходящей под ваши
+# условия фильтрации
