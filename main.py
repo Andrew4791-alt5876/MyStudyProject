@@ -1,5 +1,7 @@
 from datetime import datetime
 from typing import Any
+
+from src.process_bank import process_bank_search
 from src.read_file import read_csv_file, read_excel_file
 from src.utils import read_json_file
 from src.processing import filter_by_state, sort_by_date
@@ -33,11 +35,11 @@ def status_transactions(choose_user_type: Any) -> str:
             f'Введите статус, по которому необходимо выполнить фильтрацию.\n'
             f'Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING.\nПользователь: '
         ).upper()
-    if choose_user_type in ['EXECUTED', 'E', 'EXE']:
+    if choose_user_type in ['EXECUTED', 'E', 'EX', 'EXE', 'EXEC', 'EXECU', 'EXECUT', 'EXECUTE']:
         status_transactions = list_type_operations[0]
-    elif choose_user_type in ['CANCELED', 'C', 'CAN']:
+    elif choose_user_type in ['CANCELED', 'C', 'CA', 'CAN', 'CANC','CANCE', 'CANCEL', 'CANCELE']:
         status_transactions = list_type_operations[1]
-    elif choose_user_type in ['PENDING', 'P', 'PEN']:
+    elif choose_user_type in ['PENDING', 'P', 'PE', 'PEN', 'PEND', 'PENDI', 'PENDIN']:
         status_transactions = list_type_operations[2]
     return status_transactions
 
@@ -85,47 +87,38 @@ def sort_operations_by_date(select_transactions_by_status, date_sort_user):
 
 
 def sort_transactions_by_rub(sort_transactions_by_date, user_currency_code):
-    if user_currency_code.isalpha() and user_currency_code in ['ДА', 'Д']:
-        list_only_rub = []
-        for transactions_all_currency in sort_transactions_by_date:
-            if (transactions_all_currency.get('currency_code') and transactions_all_currency['currency_code']== 'RUB') or (transactions_all_currency.get('operationAmount') and transactions_all_currency['operationAmount']['currency']['code'] == 'RUB'):
-                list_only_rub.append(transactions_all_currency)
-        return list_only_rub
-    elif user_currency_code.isalpha() and user_currency_code in ['НЕТ', 'НЕ', 'Н']:
-        return sort_transactions_by_date
+    while user_currency_code or user_currency_code == '':
+        if user_currency_code.isalpha() and user_currency_code in ['ДА', 'Д']:
+            list_only_rub = [
+                transactions_all_currency for transactions_all_currency
+                in sort_transactions_by_date
+                if (transactions_all_currency.get('currency_code')
+                    and transactions_all_currency['currency_code']== 'RUB')
+                   or (transactions_all_currency.get('operationAmount')
+                       and transactions_all_currency['operationAmount']['currency']['code'] == 'RUB')]
+            return list_only_rub
+        elif user_currency_code.isalpha() and user_currency_code in ['НЕТ', 'НЕ', 'Н']:
+            return sort_transactions_by_date
+        else:
+            user_currency_code = input(
+                f'Не верный ответ, нужен ответ Да или Нет,\n'
+                f'можно ввести первую букву: '
+            ).upper()
 
 
 def sort_by_word_of_description(sort_by_rub, choose_user_word):
-    if choose_user_word.isalpha() and choose_user_word in ['ДА', 'Д']:
-        sort_word = input(
-            f'\nВыберите пункт:\n'
-            f'1. Перевод\n'
-            f'2. Открытие вклада\n'
-            f'3. Счета на счет\n'
-            f'4. Карты на карту\n'
-            f'5. Карты на счет\n'
-            f'6. Счет\n'
-            f'7. Карты\n'
-            f'8. Перевод организации\n'
-            f'Ввод пользователя: '
-        )
-        dict_of_words = {
-            '1': 'Перевод',
-            '2': 'Открытие',
-            '3': 'счета',
-            '4': 'карту',
-            '5': 'Перевод с карты на счет',
-            '6': 'счет',
-            '7': 'карты',
-            '8': 'организации'
-        }
-        if int(sort_word) == 5:
-            sort_by_word = [g for g in sort_by_rub if dict_of_words[sort_word] == g['description']]
+    global sort_by_word
+    while choose_user_word or choose_user_word == '':
+        if choose_user_word.isalpha() and choose_user_word in ['ДА', 'Д']:
+            input_word_or_string = input('Введите слово или строку для сортировки: ')
+            return process_bank_search(sort_by_rub, input_word_or_string)
+        elif choose_user_word.isalpha() and choose_user_word in ['НЕТ', 'НЕ', 'Н']:
+            return sort_by_rub
         else:
-            sort_by_word = [g for g in sort_by_rub if dict_of_words[sort_word] in g['description'].split()]
-        return sort_by_word
-    elif choose_user_word.isalpha() and choose_user_word in ['НЕТ', 'НЕ', 'Н']:
-        return sort_by_rub
+            choose_user_word = input(
+                f'Не верный ответ, нужен ответ Да или Нет,\n'
+                f'можно ввести первую букву: '
+            ).upper()
 
 
 def main():
@@ -137,7 +130,6 @@ def main():
         print(f'{key}. Получить информацию о транзакциях из {item}-файла')
     choose_user_file = input('\nПользователь: ')
     data_operations_select = load_data_operations(choose_user_file)
-    print(f'Найдено {len(data_operations_select)} транзакций.')
     print('#'*80)
 
     choose_user_status = input(
@@ -148,86 +140,57 @@ def main():
     user_choose_status = status_transactions(choose_user_status)
     print(f'\nОперации отфильтрованы по статусу {user_choose_status}.')
     select_transactions_by_status = filter_by_state(data_operations_select, user_choose_status)
-    print(f'Найдено {len(select_transactions_by_status)} транзакций.')
     print('#' * 80)
 
     choose_user_sort_date = input(f'\nОтсортировать операции по дате? Да/Нет\n'
                            f'Пользователь (можно ввести первую букву): '
                            ).upper()
     sort_transactions_by_date = sort_operations_by_date(select_transactions_by_status, choose_user_sort_date)
-    print(f'Обработано {len(sort_transactions_by_date)} транзакций.')
     print('#' * 80)
 
     choose_user_sort_rub = input(f'\nВыводить только рублевые транзакции? Да/Нет\n'
                                       f'Пользователь (можно ввести первую букву): ').upper()
     sort_by_rub = sort_transactions_by_rub(sort_transactions_by_date, choose_user_sort_rub)
-    print(f'Найдено {len(sort_by_rub)} транзакций.')
     print('#' * 80)
 
     choose_user_word = input(f'\nОтфильтровать список транзакций по определенному слову в описании? Да/Нет\n'
                              f'Пользователь (можно ввести первую букву): ').upper()
     data_after_choosing = sort_by_word_of_description(sort_by_rub, choose_user_word)
-    print(f'Найдено {len(data_after_choosing)} транзакций.')
+    for k in data_after_choosing:
+        print(k['description'])
     print('#' * 80)
 
-    print('\nРаспечатываю итоговый список транзакций...')
-    print(f'Всего банковских операций в выборке: {len(data_after_choosing)}')
-    for k in data_after_choosing[:5]:
-        if isinstance(k.get('from'), str):
-            print(
-                f'\n{k['date']} {k['description']}\n'
-                f'{mask_account_card_fun(k['from'])} -> {mask_account_card_fun(k['to'])}\n'
-                f'Сумма: {k['amount']}'
-            )
-        else:
-            print(
-                f'\n{k['date']} {k['description']}\n'
-                f'{mask_account_card_fun(k['to'])}\n'
-                f'Сумма: {k['amount']}'
-            )
+    if len(data_after_choosing) == 0:
+        print('\nНе найдено ни одной транзакции, подходящей под ваши условия фильтрации.')
+    else:
+        print('\nРаспечатываю итоговый список первых десяти транзакций...')
+        print(f'Всего банковских операций в выборке: {len(data_after_choosing)}')
+        for k in data_after_choosing[:10]:
+            if isinstance(k.get('from'), str) and isinstance(k.get('operationAmount'), dict):
+                print(
+                    f'\n{k['date']} {k['description']}\n'
+                    f'{mask_account_card_fun(k['from'])} -> {mask_account_card_fun(k['to'])}\n'
+                    f'Сумма: {k['operationAmount']['amount']}'
+                )
+            elif isinstance(k.get('operationAmount'), dict):
+                print(
+                    f'\n{k['date']} {k['description']}\n'
+                    f'{mask_account_card_fun(k['to'])}\n'
+                    f'Сумма: {k['operationAmount']['amount']}'
+                )
+            elif isinstance(k.get('from'), str):
+                print(
+                    f'\n{k['date']} {k['description']}\n'
+                    f'{mask_account_card_fun(k['from'])} -> {mask_account_card_fun(k['to'])}\n'
+                    f'Сумма: {k['amount']}'
+                )
+            else:
+                print(
+                    f'\n{k['date']} {k['description']}\n'
+                    f'{mask_account_card_fun(k['to'])}\n'
+                    f'Сумма: {k['amount']}'
+                )
+    print('#' * 80)
 
 
 main()
-
-# Программа: Отсортировать операции по дате? Да/Нет
-#
-# Пользователь: да
-#
-# Программа: Отсортировать по возрастанию или по убыванию?
-#
-# Пользователь: по возрастанию/по убыванию
-#
-# Программа: Выводить только рублевые транзакции? Да/Нет
-#
-# Пользователь: да
-#
-# Программа: Отфильтровать список транзакций по определенному слову
-# в описании? Да/Нет
-#
-# Пользователь: да/нет
-#
-# Программа: Распечатываю итоговый список транзакций...
-#
-# Программа:
-# Всего банковских операций в выборке: 4
-#
-# 08.12.2019 Открытие вклада
-# Счет **4321
-# Сумма: 40542 руб.
-#
-# 12.11.2019 Перевод с карты на карту
-# MasterCard 7771 27** **** 3727 -> Visa Platinum 1293 38** **** 9203
-# Сумма: 130 USD
-#
-# 18.07.2018 Перевод организации
-# Visa Platinum 7492 65** **** 7202 -> Счет **0034
-# Сумма: 8390 руб.
-#
-# 03.06.2018 Перевод со счета на счет
-# Счет **2935 -> Счет **4321
-# Сумма: 8200 EUR
-#
-# Если выборка оказалась пустой, программа выводит сообщение:
-#
-# Программа: Не найдено ни одной транзакции, подходящей под ваши
-# условия фильтрации

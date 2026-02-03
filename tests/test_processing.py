@@ -13,12 +13,12 @@ def test_filter_by_state_executed(info_users_state: list, filter_users_state_exe
 
 def test_filter_by_state_executed_empty(info_users_state: list, filter_users_state_executed: list) -> None:
     """Тест для неопределенного статуса."""
-    assert filter_by_state(info_users_state, state="") == filter_users_state_executed
+    assert filter_by_state(info_users_state, state="") == []
 
 
 def test_filter_by_state_executed_wrong(info_users_state: list, filter_users_state_executed: list) -> None:
     """Тест для не верного статуса."""
-    assert filter_by_state(info_users_state, state="hfwhvfWH") == filter_users_state_executed
+    assert filter_by_state(info_users_state, state="hfwhvfWH") == []
 
 
 def test_sort_by_date(sort_by_date_enter: list, sort_by_date_exit: list) -> None:
