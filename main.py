@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import Any
 
-from src.process_bank import process_bank_search
+from src.process_bank import process_bank_search, process_bank_operations
 from src.read_file import read_csv_file, read_excel_file
 from src.utils import read_json_file
-from src.processing import filter_by_state, sort_by_date
+from src.processing import filter_by_state
 from src.widget import mask_account_card_fun
 
 
@@ -156,8 +156,6 @@ def main():
     choose_user_word = input(f'\nОтфильтровать список транзакций по определенному слову в описании? Да/Нет\n'
                              f'Пользователь (можно ввести первую букву): ').upper()
     data_after_choosing = sort_by_word_of_description(sort_by_rub, choose_user_word)
-    for k in data_after_choosing:
-        print(k['description'])
     print('#' * 80)
 
     if len(data_after_choosing) == 0:
