@@ -3,28 +3,36 @@ from collections import Counter
 from typing import Any
 
 
-def process_bank_search(data: list[dict], search: str) -> list[dict]:
+def process_bank_search(data: list[dict], search: str) -> None | str | list[Any]:
     """Функция, возвращающая список словарей, у которых в описании есть необходимая строка."""
-    if not isinstance(data, list):
-        raise ValueError("Параметр 'data' должен быть списком")
-    if not isinstance(search, str):
-        raise ValueError("Параметр 'search' должен быть строкой")
-    if not search.strip():
-        return data
     try:
+        result = []
         pattern = re.compile(search, re.IGNORECASE | re.UNICODE)
-    except re.error as e:
-        raise ValueError(f"Некорректное регулярное выражение в параметре 'search': {e}")
-    result = []
-    for operation in data:
-        if not isinstance(operation, dict):
-            continue
-        description = operation.get('description')
-        if not isinstance(description, str):
-            continue
-        if pattern.search(description):
-            result.append(operation)
-    return result
+        for operation in data:
+            description = operation.get('description')
+            if pattern.search(description):
+                result.append(operation)
+        return result
+    except AttributeError:
+        return 'Ошибка входных данных'
+    except TypeError:
+        return 'В базе данных не итерируемый объект'
+
+
+    # except re.error as e:
+    #     raise ValueError(f"Некорректное регулярное выражение в параметре 'search': {e}")
+
+        #     result = 'Не верные входные данные'
+        # for operation in data:
+        #     if not isinstance(operation, dict):
+        #         continue
+        #     description = operation.get('description')
+        #     if not isinstance(description, str):
+        #         continue
+        #     if pattern.search(description):
+        #         result.append(operation)
+        #     return result
+
 
 
 def process_bank_operations(data: list[dict], categories: list) -> Any:
@@ -89,5 +97,7 @@ data_of = [
         },
     ]
 
-# list_of = ''
-print(process_bank_search(data_of, search = ''))
+# data_of = (1, 2, 3)
+data_finish = process_bank_search(data_of, search = 'guuhi')
+print(data_finish)
+print(len(data_finish))

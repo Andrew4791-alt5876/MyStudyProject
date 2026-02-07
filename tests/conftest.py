@@ -217,7 +217,7 @@ def card_number_generator_exit_999() -> list[str]:
 
 
 @pytest.fixture
-# Выходные данные для теста генератора card_number_generator.
+# Выходные данные для теста bank_search_with_data_and_search.
 def search_with_data_and_search() -> list[dict[str, int | str | dict[str, str | dict[str, str]]]]:
     return [
         {
@@ -235,3 +235,9 @@ def search_with_data_and_search() -> list[dict[str, int | str | dict[str, str | 
             'to': 'Visa Platinum 8990922113665229'
         }
     ]
+
+
+@pytest.fixture
+# Входные данные для теста bank_search_with_search_and_incorrect_data.
+def incorrect_data():
+    return 1, 2, 3
