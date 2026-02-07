@@ -9,6 +9,7 @@ from src.widget import mask_account_card_fun
 
 
 def load_data_operations(choose_user: Any) -> list[dict] | None | str:
+    """Функция, которая извлекает базу данных по желанию пользователя"""
     while choose_user or choose_user == '':
         if choose_user.isdigit():
             select_user = int(choose_user)
@@ -25,9 +26,12 @@ def load_data_operations(choose_user: Any) -> list[dict] | None | str:
                 choose_user = input('Не верный выбор, попробуй еще раз!: ')
         else:
             choose_user = input('Не верный выбор, попробуй еще раз!: ')
+    return None
 
 
 def status_transactions(choose_user_type: Any) -> str:
+    """Функция, которая позволяет выбрать статус операции по желанию пользователя."""
+    global status_transactions
     list_type_operations = ['EXECUTED', 'CANCELED', 'PENDING', 'E', 'C', 'P', 'EXE', 'CAN', 'PEN']
     while choose_user_type not in list_type_operations:
         print(f'\nСтатус операции {choose_user_type} недоступен.\n')
@@ -44,7 +48,8 @@ def status_transactions(choose_user_type: Any) -> str:
     return status_transactions
 
 
-def sort_operations_by_date(select_transactions_by_status, date_sort_user):
+def sort_operations_by_date(select_transactions_by_status: Any, date_sort_user: Any) -> list | None:
+    """Функция, которая позволяет запросить у пользователя и отсортировать данные по дате и направлению сортировки"""
     global sort_transactions
     while date_sort_user or date_sort_user == '':
         if date_sort_user.isalpha() and date_sort_user in ['ДА', 'Д']:
@@ -84,9 +89,11 @@ def sort_operations_by_date(select_transactions_by_status, date_sort_user):
                 f'Не верный ответ, нужен ответ Да или Нет,\n'
                 f'можно ввести первую букву: '
             ).upper()
+    return None
 
 
-def sort_transactions_by_rub(sort_transactions_by_date, user_currency_code):
+def sort_transactions_by_rub(sort_transactions_by_date: Any, user_currency_code: Any) -> list | None:
+    """Функция, которая позволяет отсортировать базу данных по желанию пользователя."""
     while user_currency_code or user_currency_code == '':
         if user_currency_code.isalpha() and user_currency_code in ['ДА', 'Д']:
             list_only_rub = [
@@ -104,9 +111,11 @@ def sort_transactions_by_rub(sort_transactions_by_date, user_currency_code):
                 f'Не верный ответ, нужен ответ Да или Нет,\n'
                 f'можно ввести первую букву: '
             ).upper()
+    return None
 
 
-def sort_by_word_of_description(sort_by_rub, choose_user_word):
+def sort_by_word_of_description(sort_by_rub: Any, choose_user_word: Any) -> None | str | list:
+    """Функция, которая позволяет сортировку базы данных по желанию пользователя по ключевому слову или его части."""
     global sort_by_word
     while choose_user_word or choose_user_word == '':
         if choose_user_word.isalpha() and choose_user_word in ['ДА', 'Д']:
@@ -119,9 +128,11 @@ def sort_by_word_of_description(sort_by_rub, choose_user_word):
                 f'Не верный ответ, нужен ответ Да или Нет,\n'
                 f'можно ввести первую букву: '
             ).upper()
+    return None
 
 
-def main():
+def main() -> Any:
+    """Главная функция проекта."""
     print('Привет! Добро пожаловать в программу работы с банковскими транзакциями.')
     print('#'*80)
     dict_questions = {1: 'JSON', 2: 'CSV', 3: 'XLSX'}
