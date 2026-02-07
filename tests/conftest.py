@@ -217,27 +217,28 @@ def card_number_generator_exit_999() -> list[str]:
 
 
 @pytest.fixture
-# Выходные данные для теста bank_search_with_data_and_search.
+# Выходные данные для теста test_bank_search_with_data_and_search.
 def search_with_data_and_search() -> list[dict[str, int | str | dict[str, str | dict[str, str]]]]:
     return [
         {
-            'id': 895315941,
-            'state': 'EXECUTED',
-            'date': '2018-08-19T04:27:37.904916',
-            'operationAmount': {
-                'amount': '56883.54', 'currency': {
-                    'name': 'USD', 'code': 'USD'
-                }
-            },
-            'description':
-                'Перевод с карты на карту',
-            'from': 'Visa Classic 6831982476737658',
-            'to': 'Visa Platinum 8990922113665229'
+            "id": 895315941,
+            "state": "EXECUTED",
+            "date": "2018-08-19T04:27:37.904916",
+            "operationAmount": {"amount": "56883.54", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод с карты на карту",
+            "from": "Visa Classic 6831982476737658",
+            "to": "Visa Platinum 8990922113665229",
         }
     ]
 
 
 @pytest.fixture
-# Входные данные для теста bank_search_with_search_and_incorrect_data.
-def incorrect_data():
+# Входные данные для теста test_bank_search_with_search_and_incorrect_data.
+def incorrect_data() -> tuple:
     return 1, 2, 3
+
+
+@pytest.fixture
+# Выходные данные для теста test_process_bank_operations_with_data_and_categories.
+def results_with_data_and_categories() -> dict:
+    return {"Перевод организации": 2, "Перевод с карты на карту": 1}
