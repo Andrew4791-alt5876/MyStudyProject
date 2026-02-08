@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def read_csv_file(file_path_csv: str = '') -> list[dict]:
+def read_csv_file(file_path_csv: str = "") -> list[dict]:
     """Функция, которая преобразует csv-файл в python базу данных"""
     if not isinstance(file_path_csv, str):
         return []
@@ -16,7 +16,7 @@ def read_csv_file(file_path_csv: str = '') -> list[dict]:
         return []
 
 
-def read_excel_file(file_path_excel: str = '') -> list[dict]:
+def read_excel_file(file_path_excel: str = "") -> list[dict]:
     """Функция, которая преобразует excel-файл в python базу данных"""
     if not isinstance(file_path_excel, str):
         return []

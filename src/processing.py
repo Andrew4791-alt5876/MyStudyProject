@@ -2,14 +2,12 @@ from datetime import datetime
 
 
 def filter_by_state(users_info_state: list, state: str = "EXECUTED") -> list:
-    """Функция, которая возвращает новый список словарей, содержащий только те словари, у которых ключ
-    state соответствует указанному значению"""
-    filter_users_state = []
-    for user_info_state in users_info_state:
-        if user_info_state["state"] == "EXECUTED" and state != "CANCELED":
-            filter_users_state.append(user_info_state)
-        elif user_info_state["state"] == "CANCELED" and state == "CANCELED":
-            filter_users_state.append(user_info_state)
+    """Функция возвращает новый список словарей у которых ключ state соответствует указанному значению"""
+    filter_users_state = [
+        user_info_state
+        for user_info_state in users_info_state
+        if isinstance(user_info_state, dict) and user_info_state.get("state") == state
+    ]
     return filter_users_state
 
 
